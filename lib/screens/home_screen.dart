@@ -1,4 +1,4 @@
-// home_screen.dart
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -17,11 +17,27 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late DateTime time;
   String cityName = '';
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     time = DateTime.now();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        time = DateTime.now();
+      });
+    });
   }
 
   Widget getWeatherIcon(int code) {
